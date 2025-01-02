@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 text-white h-screen">
+            <div class="p-4 text-xl font-bold text-center">LMS Hub</div>
+            <nav class="mt-4">
+                <a href="dashboard.html" class="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
+                <a href="users.html" class="block py-2 px-4 hover:bg-gray-700">Users</a>
+                <a href="courses.html" class="block py-2 px-4 hover:bg-gray-700">Courses</a>
+                <a href="resources.html" class="block py-2 px-4 hover:bg-gray-700">Resources</a>
+                <a href="permissions.html" class="block py-2 px-4 hover:bg-gray-700">Permissions</a>
+                <a href="profile.html" class="block py-2 px-4 hover:bg-gray-700 bg-gray-700">Profile</a>
+                <a href="../login.html" class="block py-2 px-4 text-red-500 hover:bg-gray-700">Logout</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h1 class="text-2xl font-bold mb-6">Admin Profile</h1>
+
+            <!-- Profile Details -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-bold mb-4">Profile Details</h2>
+                <div class="mb-4">
+                    <label for="adminName" class="block text-gray-700 font-bold mb-2">Name</label>
+                    <input type="text" id="adminName" value="Admin Name" class="w-full p-2 border rounded" readonly>
+                </div>
+                <div class="mb-4">
+                    <label for="adminEmail" class="block text-gray-700 font-bold mb-2">Email</label>
+                    <input type="email" id="adminEmail" value="admin@example.com" class="w-full p-2 border rounded" readonly>
+                </div>
+                <div class="mb-4">
+                    <label for="adminRole" class="block text-gray-700 font-bold mb-2">Role</label>
+                    <input type="text" id="adminRole" value="Administrator" class="w-full p-2 border rounded" readonly>
+                </div>
+            </div>
+
+            <!-- Change Password -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Change Password</h2>
+                <form id="changePasswordForm">
+                    <div class="mb-4">
+                        <label for="currentPassword" class="block text-gray-700 font-bold mb-2">Current Password</label>
+                        <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter current password" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="newPassword" class="block text-gray-700 font-bold mb-2">New Password</label>
+                        <input type="password" id="newPassword" name="newPassword" placeholder="Enter new password" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirmNewPassword" class="block text-gray-700 font-bold mb-2">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm new password" class="w-full p-2 border rounded">
+                    </div>
+                    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onclick="changePassword()">Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to change the password
+        function changePassword() {
+            const currentPassword = document.getElementById("currentPassword").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmNewPassword = document.getElementById("confirmNewPassword").value;
+
+            if (!currentPassword || !newPassword || !confirmNewPassword) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            if (newPassword !== confirmNewPassword) {
+                alert("New passwords do not match.");
+                return;
+            }
+
+            alert("Password changed successfully! (This is a placeholder action.)");
+            document.getElementById("changePasswordForm").reset();
+        }
+    </script>
+</body>
+</html>

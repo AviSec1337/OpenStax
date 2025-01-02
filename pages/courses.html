@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 text-white h-screen">
+            <div class="p-4 text-xl font-bold text-center">LMS Hub</div>
+            <nav class="mt-4">
+                <a href="dashboard.html" class="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
+                <a href="users.html" class="block py-2 px-4 hover:bg-gray-700">Users</a>
+                <a href="courses.html" class="block py-2 px-4 hover:bg-gray-700 bg-gray-700">Courses</a>
+                <a href="resources.html" class="block py-2 px-4 hover:bg-gray-700">Resources</a>
+                <a href="permissions.html" class="block py-2 px-4 hover:bg-gray-700">Permissions</a>
+                <a href="profile.html" class="block py-2 px-4 hover:bg-gray-700">Profile</a>
+                <a href="../login.html" class="block py-2 px-4 text-red-500 hover:bg-gray-700">Logout</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h1 class="text-2xl font-bold mb-6">Manage Courses</h1>
+
+            <!-- Add Course Form -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-bold mb-4">Add New Course</h2>
+                <form id="courseForm">
+                    <div class="mb-4">
+                        <label for="courseName" class="block text-gray-700 font-bold mb-2">Course Name</label>
+                        <input type="text" id="courseName" name="courseName" placeholder="Enter course name" class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="courseDescription" class="block text-gray-700 font-bold mb-2">Course Description</label>
+                        <textarea id="courseDescription" name="courseDescription" placeholder="Enter course description" class="w-full p-2 border rounded"></textarea>
+                    </div>
+                    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onclick="addCourse()">Add Course</button>
+                </form>
+            </div>
+
+            <!-- Course List -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Course List</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2">ID</th>
+                            <th class="border border-gray-300 px-4 py-2">Name</th>
+                            <th class="border border-gray-300 px-4 py-2">Description</th>
+                            <th class="border border-gray-300 px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courseTable">
+                        <!-- Dynamic course rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Placeholder for course data
+        let courses = [
+            { id: 1, name: "Web Development", description: "Learn HTML, CSS, and JavaScript" },
+            { id: 2, name: "Data Science", description: "Learn Python, Machine Learning, and AI" },
+            { id: 3, name: "Graphic Design", description: "Learn Photoshop, Illustrator, and Design Principles" }
+        ];
+
+        // Function to display courses
+        function displayCourses() {
+            const courseTable = document.getElementById("courseTable");
+            courseTable.innerHTML = ""; // Clear table before reloading
+            courses.forEach(course => {
+                const row = `
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">${course.id}</td>
+                        <td class="border border-gray-300 px-4 py-2">${course.name}</td>
+                        <td class="border border-gray-300 px-4 py-2">${course.description}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <button class="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-yellow-600 mr-2" onclick="editCourse(${course.id})">Edit</button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600" onclick="deleteCourse(${course.id})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+                courseTable.innerHTML += row;
+            });
+        }
+
+        // Function to add a new course
+        function addCourse() {
+            const courseName = document.getElementById("courseName").value;
+            const courseDescription = document.getElementById("courseDescription").value;
+
+            if (courseName && courseDescription) {
+                const newCourse = {
+                    id: courses.length + 1,
+                    name: courseName,
+                    description: courseDescription
+                };
+                courses.push(newCourse);
+                displayCourses();
+                document.getElementById("courseForm").reset();
+                alert("Course added successfully!");
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        // Function to edit a course
+        function editCourse(id) {
+            const course = courses.find(c => c.id === id);
+            if (course) {
+                const newName = prompt("Edit course name:", course.name);
+                const newDescription = prompt("Edit course description:", course.description);
+                if (newName && newDescription) {
+                    course.name = newName;
+                    course.description = newDescription;
+                    displayCourses();
+                    alert("Course updated successfully!");
+                }
+            }
+        }
+
+        // Function to delete a course
+        function deleteCourse(id) {
+            if (confirm("Are you sure you want to delete this course?")) {
+                courses = courses.filter(c => c.id !== id);
+                displayCourses();
+                alert("Course deleted successfully!");
+            }
+        }
+
+        // Display courses on page load
+        displayCourses();
+    </script>
+</body>
+</html>

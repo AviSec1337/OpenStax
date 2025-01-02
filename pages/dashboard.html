@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 text-white h-screen">
+            <div class="p-4 text-xl font-bold text-center">LMS Hub</div>
+            <nav class="mt-4">
+                <a href="dashboard.html" class="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
+                <a href="users.html" class="block py-2 px-4 hover:bg-gray-700">Users</a>
+                <a href="courses.html" class="block py-2 px-4 hover:bg-gray-700">Courses</a>
+                <a href="resources.html" class="block py-2 px-4 hover:bg-gray-700">Resources</a>
+                <a href="permissions.html" class="block py-2 px-4 hover:bg-gray-700">Permissions</a>
+                <a href="profile.html" class="block py-2 px-4 hover:bg-gray-700">Profile</a>
+                <a href="../login.html" class="block py-2 px-4 text-red-500 hover:bg-gray-700">Logout</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6">
+            <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
+
+            <!-- Dashboard Widgets -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <!-- Widget 1 -->
+                <div class="bg-blue-500 text-white p-4 rounded-lg shadow-md">
+                    <h2 class="text-lg font-bold">Total Users</h2>
+                    <p class="text-3xl mt-2" id="totalUsers">...</p>
+                </div>
+                <!-- Widget 2 -->
+                <div class="bg-green-500 text-white p-4 rounded-lg shadow-md">
+                    <h2 class="text-lg font-bold">Total Courses</h2>
+                    <p class="text-3xl mt-2" id="totalCourses">...</p>
+                </div>
+                <!-- Widget 3 -->
+                <div class="bg-yellow-500 text-white p-4 rounded-lg shadow-md">
+                    <h2 class="text-lg font-bold">Pending Permissions</h2>
+                    <p class="text-3xl mt-2" id="pendingPermissions">...</p>
+                </div>
+            </div>
+
+            <!-- Registered Users Section -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-bold mb-4">Registered Users</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2">ID</th>
+                            <th class="border border-gray-300 px-4 py-2">Name</th>
+                            <th class="border border-gray-300 px-4 py-2">Email</th>
+                            <th class="border border-gray-300 px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTable">
+                        <!-- Dynamic content will go here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Resource Management Section -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-bold mb-4">Manage Resources</h2>
+                <form id="resourceForm" class="mb-4">
+                    <input type="text" id="resourceName" placeholder="Resource Name" class="w-full p-2 border rounded mb-2">
+                    <textarea id="resourceDescription" placeholder="Resource Description" class="w-full p-2 border rounded mb-2"></textarea>
+                    <button type="button" class="bg-blue-500 text-white px-4 py-2 rounded" onclick="addResource()">Add Resource</button>
+                </form>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2">ID</th>
+                            <th class="border border-gray-300 px-4 py-2">Name</th>
+                            <th class="border border-gray-300 px-4 py-2">Description</th>
+                            <th class="border border-gray-300 px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resourceTable">
+                        <!-- Dynamic content will go here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Permission Management Section -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-bold mb-4">Manage Permissions</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border border-gray-300 px-4 py-2">User ID</th>
+                            <th class="border border-gray-300 px-4 py-2">User Name</th>
+                            <th class="border border-gray-300 px-4 py-2">Permission Status</th>
+                            <th class="border border-gray-300 px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="permissionTable">
+                        <!-- Dynamic content will go here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Placeholder functions for dynamic data
+        function addResource() {
+            alert('Add Resource functionality triggered.');
+        }
+    </script>
+</body>
+</html>

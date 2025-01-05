@@ -40,6 +40,8 @@ $reviews = $conn->query($sqlReviews);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reviews - OpenStax</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <style>
         body {
             display: flex;
@@ -55,7 +57,10 @@ $reviews = $conn->query($sqlReviews);
     <!-- Header -->
     <header class="bg-blue-600 text-white py-4 shadow-lg">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold">OpenStax</h1>
+            <a href="index.php" class="logo flex items-center space-x-2 text-white text-2xl">
+                <ion-icon name="desktop-outline" class="text-3xl"></ion-icon>
+                <span>OpenStax</span>
+            </a>
             <nav>
                 <a href="index.php" class="mx-4 hover:text-gray-200">Home</a>
                 <a href="aboutus.php" class="mx-4 hover:text-gray-200">About Us</a>

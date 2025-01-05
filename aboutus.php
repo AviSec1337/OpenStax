@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - OpenStax</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body class="bg-gray-100">
     <!-- Header -->
     <header class="bg-blue-600 text-white py-4 shadow-lg">
         <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-3xl font-bold">OpenStax</h1>
+            <a href="index.php" class="logo flex items-center space-x-2 text-white text-2xl">
+                <ion-icon name="desktop-outline" class="text-3xl"></ion-icon>
+                <span>OpenStax</span>
+            </a>
             <nav>
                 <a href="index.php" class="mx-4 hover:text-gray-200">Home</a>
                 <a href="services.php" class="mx-4 hover:text-gray-200">Services</a>
@@ -80,30 +85,6 @@
                     <img src="assets/student1.jpg" alt="Student 1" class="w-32 h-32 rounded-full mx-auto mb-4">
                     <h3 class="text-xl font-bold mb-2">Ryan M. Montgomery</h3>
                     <p class="text-gray-700">Web Developer Student</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="py-16 bg-blue-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8">What People Say About OpenStax</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Testimonial 1 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <p class="text-gray-700 mb-4">"OpenStax has completely transformed the way I teach. I can share resources effortlessly and engage with my students like never before!"</p>
-                    <h3 class="text-lg font-bold">- Nirmal Poudel</h3>
-                </div>
-                <!-- Testimonial 2 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <p class="text-gray-700 mb-4">"As a student, OpenStax has made learning much easier. The approved resources are top-notch and always reliable."</p>
-                    <h3 class="text-lg font-bold">- Ankit Adhikari</h3>
-                </div>
-                <!-- Testimonial 3 -->
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <p class="text-gray-700 mb-4">"This platform is a game-changer for educators. I love how simple and efficient it is to share educational materials."</p>
-                    <h3 class="text-lg font-bold">- Anuj Shilpakar</h3>
                 </div>
             </div>
         </div>

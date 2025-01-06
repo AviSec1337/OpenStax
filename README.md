@@ -51,32 +51,62 @@ OpenStax/
 └── test-db.php                 # Script for testing database connectivity and queries
 
 
-+-------------------+         +-------------------+         +---------------------+
-|     register      |         |     resources     |         |     permissions     |
-+-------------------+         +-------------------+         +---------------------+
-| PK: id            | 1     M | PK: id            | 1     M | PK: id              |
-| first_name        +---------+ user_id (FK)      +---------+ user_id (FK)        |
-| last_name         |         | name              |         | resource_id (FK)    |
-| email             |         | description       |         | resource_type       |
-| password          |         | file_path         |         | status              |
-| role              |         | created_at        |         | requested_at        |
-| created_at        |         | type              |         | updated_at          |
-+-------------------+         +-------------------+         +---------------------+
+register
+|-- id (PK)
+|-- first_name
+|-- last_name
+|-- email (Unique)
+|-- password
+|-- role ('user' or 'admin')
+|-- created_at
+    |
+    | One-to-Many
+    |
+    v
+notes
+|-- id (PK)
+|-- user_id (FK -> register.id)
+|-- filename
+|-- filepath
+|-- uploaded_at
 
-         1                                            M
-         +--------------------------------------------+
-                               |
-                               |
-                               v
-+-------------------+         +-------------------+         +-------------------+
-|       notes       |         |       videos      |         |      review       |
-+-------------------+         +-------------------+         +-------------------+
-| PK: id            |         | PK: id            |         | PK: id            |
-| filename          |         | title             |         | full_name         |
-| filepath          |         | file_path         |         | comment           |
-| uploaded_at       |         | uploaded_at       |         | user_id (FK)      |
-| user_id (FK)      |         | user_id (FK)      |         +-------------------+
-+-------------------+         +-------------------+
+register
+    |
+    | One-to-Many
+    |
+    v
+videos
+|-- id (PK)
+|-- user_id (FK -> register.id)
+|-- title
+|-- file_path
+|-- uploaded_at
+
+register
+    |
+    | One-to-Many
+    |
+    v
+review
+|-- id (PK)
+|-- user_id (FK -> register.id)
+|-- full_name
+|-- comment
+|-- created_at
+
+register
+    |
+    | One-to-Many
+    |
+    v
+permissions
+|-- id (PK)
+|-- user_id (FK -> register.id)
+|-- resource_id
+|-- resource_type ('note', 'video')
+|-- status ('pending', 'approved', 'denied')
+|-- requested_at
+|-- updated_at
 
 ```
 ## **Setup Instructions**

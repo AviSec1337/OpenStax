@@ -91,7 +91,7 @@ OpenStax/
 +-------------------+         +-------------------+
 
 ```
-Setup Instructions
+## **Setup Instructions**
 1. Install Required Software
 Download and install XAMPP or any web server with PHP and MySQL support.
 2. Import the Database

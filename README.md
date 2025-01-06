@@ -19,49 +19,37 @@ OpenStax is a comprehensive Learning Management System (LMS) designed for educat
 
 ```plaintext
 OpenStax/
-  ├── index.php                # Main landing page
-  ├── aboutus.php              # About Us page
-  ├── services.php             # Services page
-  ├── README.md                # Project documentation (this file)
+├── assets/                     # Contains static resources like images, stylesheets, and scripts
+│   ├── css/
+│   │   ├── style.css           # Main stylesheet for the website's design and layout
+│   ├── images/
+│   │   ├── logo.png            # Logo displayed on the website
+│   │   ├── banner.jpg          # Banner image used on various pages
+│   ├── js/
+│       ├── script.js           # JavaScript file for client-side interactions
+├── pages/                      # Contains additional web pages
+│   ├── contact.php             # Contact form for users to reach out
+│   ├── faq.php                 # Frequently Asked Questions page
+│   ├── privacy.php             # Privacy policy detailing data handling practices
+│   ├── terms.php               # Terms and conditions for website usage
+├── uploads/                    # Directory for storing user-uploaded files
+│   ├── user1/
+│   │   ├── document.pdf        # Example document uploaded by User 1
+│   ├── user2/
+│       ├── image.png           # Example image uploaded by User 2
+├── README.md                   # Overview and documentation of the project
+├── aboutus.php                 # Page providing information about the organization or project
+├── db.php                      # Script managing database connections
+├── index.html                  # Static homepage of the website
+├── index.php                   # Dynamic homepage with server-side processing
+├── login.html                  # User login page for authentication
+├── reviews.php                 # Page displaying user reviews
+├── reviews_login.php           # Login page specific to the reviews section
+├── reviews_signup.php          # Signup page for users to register and post reviews
+├── services.php                # Page outlining the services offered
+├── signup.html                 # User registration page
+└── test-db.php                 # Script for testing database connectivity and queries
 
-  ├── /pages                   # Contains user and admin functionality
-  │     ├── admin_dashboard.php      # Admin dashboard
-  │     ├── admin_users.php          # Manage users page
-  │     ├── edit_user.php            # Edit user page
-  │     ├── admin_resources.php      # Manage resources
-  │     ├── admin_permissions.php    # Manage permissions
-  │     ├── admin_profile.php        # Admin profile page
-  │     ├── admin_login.php          # Admin login page
-  │     ├── admin_signup.php         # Admin signup page
-  │     
-  │     ├── user_dashboard.php       # User dashboard
-  │     ├── user_resources.php       # User resources page
-  │     ├── user_profile.php         # User profile page
-  │     ├── user_login.php           # User login page
-  │     ├── user_register.php        # User registration page
-  │     ├── user_logout.php          # User logout page
-  │     
-  │     ├── reviews.php              # Reviews page
-  │     ├── reviews_login.php        # Login page for reviews
-  │     ├── reviews_signup.php       # Signup page for reviews
-  │     
-  │     ├── logout.php               # Generic logout functionality
-
-  ├── /assets                  # Static files such as images, stylesheets, and scripts
-  │     ├── styles.css               # Global CSS file (optional)
-  │     ├── script.js                # Shared JavaScript logic (optional)
-  │     ├── /images                  # Images for the project
-  │          ├── tutor1.jpg          # Sample tutor image
-  │          ├── tutor2.jpg          # Sample tutor image
-  │          ├── student1.jpg        # Sample student image
-  │          ├── logo.png            # Project logo (optional)
-
-  ├── /uploads                 # Directory for uploaded resources
-  │     ├── (Uploaded files will be stored here)
-
-  ├── /db                      # Database connection and SQL-related files
-  │     ├── db.php                   # Database connection file
-  │     ├── openstax.sql             # SQL dump file to create database tables
 
 +-------------------+         +-------------------+         +---------------------+
 |     register      |         |     resources     |         |     permissions     |

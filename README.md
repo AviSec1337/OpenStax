@@ -90,7 +90,7 @@ OpenStax/
 | user_id (FK)      |         | user_id (FK)      |         +-------------------+
 +-------------------+         +-------------------+
 
-
+```
 Setup Instructions
 1. Install Required Software
 Download and install XAMPP or any web server with PHP and MySQL support.

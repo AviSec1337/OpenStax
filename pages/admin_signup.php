@@ -26,16 +26,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows > 0) {
             $error = "Email already exists.";
         } else {
-            // Insert new user into database
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $sql = "INSERT INTO register (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, 'user')";
+            // Hash the password before storing it in the database
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert new admin user into the database
+            $sql = "INSERT INTO register (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, 'admin')";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param('ssss', $firstName, $lastName, $email, $hashedPassword);
 
             if ($stmt->execute()) {
-                $success = "Registration successful. You can now log in.";
+                $success = "Admin registration successful. You can now log in.";
             } else {
-                $error = "Error: " . $conn->error;
+                $error = "Error: Could not register admin. " . $conn->error;
             }
         }
     }
@@ -47,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Signup</title>
+    <title>Admin Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
@@ -59,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (isset($success)): ?>
             <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4"><?php echo $success; ?></div>
         <?php endif; ?>
-        <form action="signup_login.php" method="POST">
+        <form action="admin_signup.php" method="POST">
             <div class="mb-4">
                 <label for="first_name" class="block text-gray-700 font-bold mb-2">First Name</label>
                 <input type="text" id="first_name" name="first_name" class="w-full p-2 border rounded" required>
@@ -82,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Sign Up</button>
         </form>
-        <p class="text-center mt-4">Already have an account? <a href="Admin_login.php" class="text-blue-500">Log In</a></p>
+        <p class="text-center mt-4">Already have an account? <a href="admin_login.php" class="text-blue-500">Log In</a></p>
     </div>
 </body>
 </html>

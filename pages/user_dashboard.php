@@ -39,6 +39,20 @@ $statusStats = [];
 while ($row = $statusResult->fetch_assoc()) {
     $statusStats[$row['status']] = $row['count'];
 }
+
+// Fetch individual resource statuses for the user
+$sqlUserResources = "SELECT r.type, r.name, p.status FROM resources r 
+    JOIN permissions p ON r.id = p.resource_id 
+    WHERE p.user_id = ?";
+$stmt = $conn->prepare($sqlUserResources);
+$stmt->bind_param('i', $userId);
+$stmt->execute();
+$userResourcesResult = $stmt->get_result();
+
+$userResources = [];
+while ($row = $userResourcesResult->fetch_assoc()) {
+    $userResources[] = $row;
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,8 +72,7 @@ while ($row = $statusResult->fetch_assoc()) {
             <nav class="mt-4">
                 <a href="user_dashboard.php" class="block py-2 px-4 bg-gray-700">Dashboard</a>
                 <a href="user_resources.php" class="block py-2 px-4 hover:bg-gray-700">Resources</a>
-                <!-- <a href="user_courses.php" class="block py-2 px-4 bg-gray-700">Courses</a> -->                
-                 <a href="user_profile.php" class="block py-2 px-4 hover:bg-gray-700">Profile</a>
+                <a href="user_profile.php" class="block py-2 px-4 hover:bg-gray-700">Profile</a>
                 <a href="../index.php" class="block py-2 px-4 text-red-500 hover:bg-gray-700">Logout</a>
             </nav>
         </div>
@@ -88,12 +101,42 @@ while ($row = $statusResult->fetch_assoc()) {
                 </div>
             </div>
 
-            <!-- Shared Resources Chart -->
-            <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
-                <h2 class="text-xl font-bold mb-4">Shared Resources</h2>
-                <div class="w-64 h-64 mx-auto">
-                    <canvas id="resourceChart"></canvas>
-                </div>
+            <!-- User Resource Table -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-bold mb-4">Your Uploaded Resources</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border px-4 py-2">Resource Type</th>
+                            <th class="border px-4 py-2">Resource Name</th>
+                            <th class="border px-4 py-2">Approval Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($userResources as $resource): ?>
+                            <tr>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($resource['type']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($resource['name']); ?></td>
+                                <td class="border px-4 py-2">
+                                    <?php 
+                                    // Conditional styling for statuses
+                                    $statusClass = '';
+                                    if ($resource['status'] === 'approved') {
+                                        $statusClass = 'text-green-500 font-bold';
+                                    } elseif ($resource['status'] === 'pending') {
+                                        $statusClass = 'text-yellow-500 font-bold';
+                                    } elseif ($resource['status'] === 'denied') {
+                                        $statusClass = 'text-red-500 font-bold';
+                                    }
+                                    ?>
+                                    <span class="<?php echo $statusClass; ?>">
+                                        <?php echo ucfirst(htmlspecialchars($resource['status'])); ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Resource Status Chart -->
@@ -107,24 +150,6 @@ while ($row = $statusResult->fetch_assoc()) {
     </div>
 
     <script>
-        // Shared Resources Chart
-        const resourceCtx = document.getElementById('resourceChart').getContext('2d');
-        const resourceChart = new Chart(resourceCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Files', 'Audios', 'Videos', 'YouTube Links'],
-                datasets: [{
-                    data: [
-                        <?php echo $resourceStats['file'] ?? 0; ?>,
-                        <?php echo $resourceStats['audio'] ?? 0; ?>,
-                        <?php echo $resourceStats['video'] ?? 0; ?>,
-                        <?php echo $resourceStats['youtube'] ?? 0; ?>
-                    ],
-                    backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'],
-                }]
-            },
-        });
-
         // User Resource Status Chart
         const statusCtx = document.getElementById('statusChart').getContext('2d');
         const statusChart = new Chart(statusCtx, {

@@ -161,7 +161,11 @@ $permissionList = $conn->query($sqlPermissionList);
                                 <td class="border border-gray-300 px-4 py-2"><?php echo $permission['resource_id']; ?></td>
                                 <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($permission['resource_type']); ?></td>
                                 <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($permission['first_name'] . ' ' . $permission['last_name']); ?></td>
-                                <td class="border border-gray-300 px-4 py-2"><?php echo htmlspecialchars($permission['status']); ?></td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <span class="<?php echo $permission['status'] === 'approved' ? 'text-green-500' : ($permission['status'] === 'denied' ? 'text-red-500' : 'text-yellow-500'); ?>">
+                                        <?php echo ucfirst(htmlspecialchars($permission['status'])); ?>
+                                    </span>
+                                </td>
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

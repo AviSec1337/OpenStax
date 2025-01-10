@@ -8,11 +8,11 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Fetch user details
+// Get the user's ID
 $userId = $_SESSION['user_id'];
 
 // Handle resource upload
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload'])) {
     $name = trim($_POST['name']);
     $description = trim($_POST['description']);
     $type = $_POST['type'];
@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (!empty($name) && !empty($description) && !empty($type) && !empty($filePath)) {
-        $sql = "INSERT INTO resources (name, description, file_path, type, created_at) VALUES (?, ?, ?, ?, NOW())";
+        $sql = "INSERT INTO resources (user_id, name, description, file_path, type, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('ssss', $name, $description, $filePath, $type);
+        $stmt->bind_param('issss', $userId, $name, $description, $filePath, $type);
 
         if ($stmt->execute()) {
             $resourceId = $conn->insert_id;
@@ -49,9 +49,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch all approved resources
-$sql = "SELECT * FROM resources WHERE id IN (SELECT resource_id FROM permissions WHERE status = 'approved')";
-$result = $conn->query($sql);
+// Handle resource deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $deleteId = intval($_POST['delete_id']);
+    $sqlDelete = "DELETE FROM resources WHERE id = ? AND user_id = ?";
+    $stmtDelete = $conn->prepare($sqlDelete);
+    $stmtDelete->bind_param('ii', $deleteId, $userId);
+    $stmtDelete->execute();
+
+    // Cascade delete from permissions
+    $sqlDeletePermissions = "DELETE FROM permissions WHERE resource_id = ?";
+    $stmtPermissionsDelete = $conn->prepare($sqlDeletePermissions);
+    $stmtPermissionsDelete->bind_param('i', $deleteId);
+    $stmtPermissionsDelete->execute();
+
+    header('Location: user_resources.php');
+    exit;
+}
+
+// Fetch the user's resources
+$sqlMyResources = "SELECT * FROM resources WHERE user_id = ?";
+$stmt = $conn->prepare($sqlMyResources);
+$stmt->bind_param('i', $userId);
+$stmt->execute();
+$myResources = $stmt->get_result();
+
+// Fetch all approved shared resources
+$sqlSharedResources = "SELECT * FROM resources WHERE id IN (SELECT resource_id FROM permissions WHERE status = 'approved')";
+$sharedResources = $conn->query($sqlSharedResources);
 
 // Function to extract YouTube video ID
 function extractYouTubeID($url) {
@@ -76,7 +101,6 @@ function extractYouTubeID($url) {
             <nav class="mt-4">
                 <a href="user_dashboard.php" class="block py-2 px-4 hover:bg-gray-700">Dashboard</a>
                 <a href="user_resources.php" class="block py-2 px-4 bg-gray-700">Resources</a>
-                <!-- <a href="user_courses.php" class="block py-2 px-4 bg-gray-700">Courses</a> -->
                 <a href="user_profile.php" class="block py-2 px-4 hover:bg-gray-700">Profile</a>
                 <a href="../index.php" class="block py-2 px-4 text-red-500 hover:bg-gray-700">Logout</a>
             </nav>
@@ -121,19 +145,53 @@ function extractYouTubeID($url) {
                         <label for="youtube_link" class="block text-gray-700 font-bold mb-2">YouTube Link</label>
                         <input type="url" id="youtube_link" name="youtube_link" class="w-full p-2 border rounded">
                     </div>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Upload</button>
+                    <button type="submit" name="upload" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Upload</button>
                 </form>
             </div>
 
-            <!-- All Approved Resources -->
+            <!-- My Resources Section -->
+            <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 class="text-xl font-bold mb-4">My Uploaded Resources</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead>
+                        <tr>
+                            <th class="border px-4 py-2">Name</th>
+                            <th class="border px-4 py-2">Type</th>
+                            <th class="border px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = $myResources->fetch_assoc()): ?>
+                            <tr>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($row['name']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($row['type']); ?></td>
+                                <td class="border px-4 py-2">
+                                    <form method="POST" class="inline">
+                                        <input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
+                                        <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
+                                    </form>
+                                    <a href="user_edit_resources.php?id=<?php echo $row['id']; ?>" class="text-blue-500 hover:text-blue-700 ml-2">Edit</a>
+                                    <?php if ($row['type'] === 'youtube'): ?>
+                                        <a href="<?php echo htmlspecialchars($row['file_path']); ?>" target="_blank" class="text-green-500 hover:text-green-700 ml-2">View</a>
+                                    <?php elseif ($row['type'] === 'file' || $row['type'] === 'audio' || $row['type'] === 'video'): ?>
+                                        <a href="<?php echo htmlspecialchars($row['file_path']); ?>" target="_blank" class="text-green-500 hover:text-green-700 ml-2">View</a>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Shared Resources Section -->
             <div class="bg-white p-6 rounded-lg shadow-lg">
                 <h2 class="text-xl font-bold mb-4">Shared Resources</h2>
                 <div class="mb-6">
                     <h3 class="text-lg font-bold mb-2">Files</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <?php
-                        $result->data_seek(0); // Reset result set pointer
-                        while ($row = $result->fetch_assoc()): 
+                        $sharedResources->data_seek(0); // Reset result set pointer
+                        while ($row = $sharedResources->fetch_assoc()): 
                             if ($row['type'] === 'file'): ?>
                                 <div class="p-4 bg-gray-100 rounded-lg shadow">
                                     <h4 class="font-bold"><?php echo htmlspecialchars($row['name']); ?></h4>
@@ -147,8 +205,8 @@ function extractYouTubeID($url) {
                     <h3 class="text-lg font-bold mb-2">Audio</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <?php
-                        $result->data_seek(0);
-                        while ($row = $result->fetch_assoc()): 
+                        $sharedResources->data_seek(0);
+                        while ($row = $sharedResources->fetch_assoc()): 
                             if ($row['type'] === 'audio'): ?>
                                 <div class="p-4 bg-gray-100 rounded-lg shadow">
                                     <h4 class="font-bold"><?php echo htmlspecialchars($row['name']); ?></h4>
@@ -165,8 +223,8 @@ function extractYouTubeID($url) {
                     <h3 class="text-lg font-bold mb-2">Videos</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <?php
-                        $result->data_seek(0);
-                        while ($row = $result->fetch_assoc()): 
+                        $sharedResources->data_seek(0);
+                        while ($row = $sharedResources->fetch_assoc()): 
                             if ($row['type'] === 'video'): ?>
                                 <div class="p-4 bg-gray-100 rounded-lg shadow">
                                     <h4 class="font-bold"><?php echo htmlspecialchars($row['name']); ?></h4>
@@ -183,8 +241,8 @@ function extractYouTubeID($url) {
                     <h3 class="text-lg font-bold mb-2">YouTube Links</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <?php
-                        $result->data_seek(0);
-                        while ($row = $result->fetch_assoc()): 
+                        $sharedResources->data_seek(0);
+                        while ($row = $sharedResources->fetch_assoc()): 
                             if ($row['type'] === 'youtube'): ?>
                                 <div class="p-4 bg-gray-100 rounded-lg shadow">
                                     <h4 class="font-bold"><?php echo htmlspecialchars($row['name']); ?></h4>

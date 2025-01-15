@@ -51,7 +51,7 @@ OpenStax/
 └── test-db.php                 # Script for testing database connectivity and queries
 ```
 ## **Table Relation**
-
+```plaintext
 register
 |-- id (PK)
 |-- first_name
@@ -108,7 +108,7 @@ permissions
 |-- status ('pending', 'approved', 'denied')
 |-- requested_at
 |-- updated_at
-
+```
 
 ## **Setup Instructions**
 1. Install Required Software

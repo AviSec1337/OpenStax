@@ -50,6 +50,7 @@ OpenStax/
 ├── signup.html                 # User registration page
 └── test-db.php                 # Script for testing database connectivity and queries
 
+## **Table Relation**
 
 register
 |-- id (PK)

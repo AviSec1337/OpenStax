@@ -53,6 +53,8 @@ OpenStax/
 
 ## **User Interface and Navigation**
 ![image](https://github.com/user-attachments/assets/06305e63-18da-4cb7-b50b-e354bcd971cc)
+![image](https://github.com/user-attachments/assets/675dbcb8-a60c-471b-abc4-4ff1a2be1be6)
+
 
 ## **Table Relation**
 ```plaintext

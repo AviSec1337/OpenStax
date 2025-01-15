@@ -50,6 +50,10 @@ OpenStax/
 ├── signup.html                 # User registration page
 └── test-db.php                 # Script for testing database connectivity and queries
 ```
+
+## **UI**
+![image](https://github.com/user-attachments/assets/06305e63-18da-4cb7-b50b-e354bcd971cc)
+
 ## **Table Relation**
 ```plaintext
 register

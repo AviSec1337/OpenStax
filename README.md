@@ -49,7 +49,7 @@ OpenStax/
 ├── services.php                # Page outlining the services offered
 ├── signup.html                 # User registration page
 └── test-db.php                 # Script for testing database connectivity and queries
-
+```
 ## **Table Relation**
 
 register
@@ -109,7 +109,7 @@ permissions
 |-- requested_at
 |-- updated_at
 
-```
+
 ## **Setup Instructions**
 1. Install Required Software
 Download and install XAMPP or any web server with PHP and MySQL support.

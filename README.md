@@ -51,7 +51,7 @@ OpenStax/
 └── test-db.php                 # Script for testing database connectivity and queries
 ```
 
-## **UI**
+## **User Interface and Navigation**
 ![image](https://github.com/user-attachments/assets/06305e63-18da-4cb7-b50b-e354bcd971cc)
 
 ## **Table Relation**
